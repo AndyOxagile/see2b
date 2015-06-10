@@ -32,7 +32,7 @@ class VideoMessageService {
 
         if(videoMessages != null) {
             videoMessages.each { it ->
-                result.push(VideoMessageDTO.make(it, opentok))
+                result.add(0, VideoMessageDTO.make(it, opentok))
             }
         }
         return result

@@ -2,7 +2,7 @@
 <html class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>See2B - Company messages</title>
+	<title>See2B - Code portal</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
@@ -82,12 +82,12 @@
 						<i class="fa  fa-fw fa-file-text"></i> Customers
 					</g:link>
 				</li>
-				<li class="nav-dropdown active">
+				<li class="nav-dropdown">
 					<g:link uri="/companyDashboard/messages">
 						<i class="fa  fa-fw fa-file-text"></i> Messages
 					</g:link>
 				</li>
-				<li class="nav-dropdown">
+				<li class="nav-dropdown active">
 					<g:link uri="/companyDashboard/code">
 						<i class="fa  fa-fw fa-file-text"></i> Code Portal
 					</g:link>
@@ -98,65 +98,24 @@
 
 	<section class="main-content-wrapper">
 		<div class="pageheader">
-			<h1>Messages </h1>
+			<h1>Code Portal </h1>
 		</div>
 
 		<section id="main-content">
 			<div class="row">
-				<!--todo in future will need translate company -->
 				<g:render template="/template/companyConference"/>
 
-				<div class="col-md-3"></div>
-				<div class="col-md-6">
-					<section class="panel" style="text-align: center;height: 300px" id="videoContainer">
-
-					</section>
-				</div>
-				<div class="col-md-3"></div>
 				<div class="col-md-12">
+					<span>Copy and Paste the following code on every webpage you'd like have
+					Video Calling enabled. Just be sure to place it before the &lt;/body&gt tag.
+					</span>
+				</div>
+				<br/><br/>
+				<div class="col-md-12">
+
 					<section class="panel">
 						<div style="padding:10px">
-							<table border="1" cellpadding="5" style="width:100%">
-								<tr>
-									<th style="width:150px">
-										Date
-									</th>
-									<th style="width:150px">
-										Time
-									</th>
-									<th style="min-width:250px">
-										User
-									</th>
-									<th style="min-width:250px">
-										Company
-									</th>
-									<th  style="width:110px">
-										State
-									</th>
-									<th style="min-width:100px">
-										Action
-									</th>
-								</tr>
-								<g:each in="${videoMessages}" var="message">
-									<tr>
-										<td>${message.date}</td>
-										<td>${message.time}</td>
-										<td>${message.user}</td>
-										<td>${message.company}</td>
-										<td>${message.state}</td>
-										<td>
-											<g:if test="${message.url && !message.isProcessing && !message.isProcessing }">
-												<button onClick="playVideo('${message.url}')" style="background-color: green;color:white; border-radius: 4px;border: none;outline:0">
-											    	<span class="glyphicon glyphicon-play" ></span>
-												</button>
-											</g:if>
-											<button style="background-color: transparent;color: black; border-radius: 4px;border: none;outline:0">
-												<span class="glyphicon glyphicon-trash" ></span>
-											</button>
-										</td>
-									</tr>
-								</g:each>
-							</table>
+							&lt;script src=\"http://beta.see2b.com:8080/seeb/static/js/external/aggregator.js\" type=\"text/javascript\"&gt;&lt;/script&gt;
 						</div>
 					</section>
 				</div>

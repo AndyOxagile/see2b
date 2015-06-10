@@ -21,6 +21,7 @@ class CompanyProfileDTO {
     String twInfo
     String gInfo
     String ytInfo
+    Boolean hasLogo
 
     static constraints = {
         name(nullable: false, blank: false, maxSize: 255)
@@ -62,6 +63,7 @@ class CompanyProfileDTO {
                 fbInfo: c.fbInfo,
                 twInfo: c.twInfo,
                 gInfo: c.gInfo,
-                ytInfo: c.ytInfo)
+                ytInfo: c.ytInfo,
+                hasLogo: c?.companyLogo != null)
     }
 }

@@ -195,7 +195,7 @@ class DashboardController {
                 info.isAvailible = new Date()
             }
 
-            info.save(flush:true, failOnError: false, validate: false )
+            info.save()
 
             TokSession tokSession = TokSession.findByAccount((OautUser)currentUser)
 

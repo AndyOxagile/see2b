@@ -15,6 +15,7 @@ class Company {
     String twInfo
     String gInfo
     String ytInfo
+    CompanyLogo companyLogo
 
     String hoursOfAvailability
     Date isAvailible
@@ -28,6 +29,7 @@ class Company {
     }
 
     static constraints = {
+        companyLogo(nullable: true)
         name(nullable: false, blank: false, maxSize: 255)
         location(nullable: true, blank: true, maxSize: 255)
         contactName(nullable: true, blank: true, maxSize: 255)

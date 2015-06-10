@@ -1,9 +1,6 @@
 <div class="col-md-12" id="conference-div" style="display:none">
 	<section class="panel">
 		<div style="padding:10px">
-			<r:require modules="jquery"/>
-			<r:require modules="bootstrap"/>
-			<r:layoutResources />
 			<link rel="stylesheet" href="../static/css/neu.css">
 			<script src="../static/js/tokbox/TB.min.js"></script>
 			<script src="../static/js/tokbox/clientPart.js"></script>
@@ -32,7 +29,6 @@
 			</div>
 		</div>
 	</section>
-	<r:layoutResources />
 	<script type="text/javascript">
 		callFunctional.initTok({apiKey:'${ apiKey }', sessionId:'${ sessionId }', token:'${ token }'});
 		callFunctional.initAreaButton();

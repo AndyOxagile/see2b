@@ -120,8 +120,8 @@
 									<th style="width:150px">
 										Date
 									</th>
-									<th  style="width:110px">
-										State
+									<th style="width:150px">
+										Time
 									</th>
 									<th style="min-width:250px">
 										User
@@ -129,8 +129,8 @@
 									<th style="min-width:250px">
 										Company
 									</th>
-									<th style="min-width:150px">
-										Url
+									<th  style="width:110px">
+										State
 									</th>
 									<th style="min-width:100px">
 										Action
@@ -139,26 +139,19 @@
 								<g:each in="${videoMessages}" var="message">
 									<tr>
 										<td>${message.date}</td>
-										<td>${message.state}</td>
+										<td>${message.time}</td>
 										<td>${message.user}</td>
 										<td>${message.company}</td>
-										<td>
-											<g:if test="${message.url}">
-												<g:if test="${message.isAnavailible}">
-													Anavailible
-												</g:if>
-												<g:if test="${message.isProcessing}">
-													Processing...
-												</g:if>
-												<g:if test="${!message.isProcessing && !message.isProcessing }">
-													<a href="${message.url}" target="_blank">${message.urlName}</a>
-												</g:if>
-											</g:if>
-										</td>
+										<td>${message.state}</td>
 										<td>
 											<g:if test="${message.url && !message.isProcessing && !message.isProcessing }">
-												<a href="javascript:playVideo('${message.url}');" target="_blank">Play</a>
+												<button onClick="playVideo('${message.url}')" style="background-color: green;color:white; border-radius: 4px;border: none;outline:0">
+													<span class="glyphicon glyphicon-play" ></span>
+												</button>
 											</g:if>
+											<button style="background-color: transparent;color: black; border-radius: 4px;border: none;outline:0">
+												<span class="glyphicon glyphicon-trash" ></span>
+											</button>
 										</td>
 									</tr>
 								</g:each>

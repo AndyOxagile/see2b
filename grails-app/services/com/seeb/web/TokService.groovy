@@ -101,7 +101,7 @@ class TokService {
         Map<Long, CustomerStateDTO> result = new HashMap<Long, CustomerStateDTO>()
         def company = companyService.getFirstCompany()
         company.isAvailible = new Date()
-        company.save(flush:true, failOnError: false, validate: false )
+        company.save()
 
         Long timeout = grailsApplication.config.grails.local.connection.timeout as Long
 
@@ -132,6 +132,11 @@ class TokService {
                         archiveService.stopRecordAndLeaveMessage(tokSession);
 //                        account, statusForCheck
                     }
+                    if(SessionState.CLIENT_CALL.equals(tokSession.active) || SessionState.INACTIVE.equals(newStatus)){
+                        archiveService.registerCall(tokSession);
+//                        account, statusForCheck
+                    }
+
                     tokSession.active = newStatus;
                     tokSession.save(flush: true)
                 }

@@ -1,6 +1,7 @@
 package com.seeb.web.command
 
 import com.seeb.web.AccountInfo
+import com.seeb.web.AccountLogo
 import grails.validation.Validateable
 
 /**
@@ -25,6 +26,7 @@ class AccountInfoDTO {
 
     Boolean needVerify = false
     Boolean alreadyVerify = false
+    Boolean hasLogo = false
 
     static constraints = {
         companyName(nullable: true, blank: true, maxSize: 255)
@@ -54,7 +56,7 @@ class AccountInfoDTO {
         return ai
     }
 
-    static AccountInfoDTO fromAccountInfo(AccountInfo ai) {
+    static AccountInfoDTO fromAccountInfo(AccountInfo ai, AccountLogo al) {
         return new AccountInfoDTO(
                 companyName: ai.companyName,
                 firstName: ai.firstName,
@@ -66,10 +68,11 @@ class AccountInfoDTO {
                 fbInfo: ai.fbInfo,
                 twInfo: ai.twInfo,
                 gInfo: ai.gInfo,
-                ytInfo: ai.ytInfo)
+                ytInfo: ai.ytInfo,
+                hasLogo: al != null)
     }
 
-    static AccountInfoDTO generateNew() {
+    static AccountInfoDTO generateNew(AccountLogo al) {
         return new AccountInfoDTO(
                 companyName: "New company",
                 firstName: "",
@@ -82,7 +85,8 @@ class AccountInfoDTO {
                 fbInfo: "",
                 twInfo: "",
                 gInfo: "",
-                ytInfo: "")
+                ytInfo: "",
+                hasLogo: al != null)
 
     }
 }

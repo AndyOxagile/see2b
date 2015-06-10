@@ -12,6 +12,7 @@
 
 	<!-- Custom styles for this theme -->
 	<link rel="stylesheet" href="../static/css/neu.css">
+	<link id="theme-style" rel="stylesheet" href="../static/html/css/styles.css">
 	<script src="../static/js/tokbox/companyPart.js"></script>
 </head>
 
@@ -87,6 +88,11 @@
 						<i class="fa  fa-fw fa-file-text"></i> Messages
 					</g:link>
 				</li>
+				<li class="nav-dropdown">
+					<g:link uri="/companyDashboard/code">
+						<i class="fa  fa-fw fa-file-text"></i> Code Portal
+					</g:link>
+				</li>
 			</ul>
 		</nav>
 	</aside>
@@ -99,34 +105,13 @@
 		<section id="main-content">
 			<div class="row">
 				<!--todo in future will need translate company -->
-				<g:render template="/template/companyConference"/>
+				<g:render template="/template/companyConference" model="[outerDivId:'outerCustomerDiv']"/>
 
 				<div class="col-md-12">
-					<section class="panel">
-						<div style="padding:10px">
-							<table border="1" cellpadding="5" style="width:100%">
-								<tr>
-									<th style="width:150px">
-										Name
-									</th>
-									<th  style="width:110px">
-										Company Name
-									</th>
-									<th style="width:100px">
-										Action
-									</th>
-								</tr>
-								<g:each in="${customers}" var="customer">
-									<tr>
-										<td>${customer.name}</td>
-										<td>${customer.companyName}</td>
-										<td>Info</td>
-									</tr>
-								</g:each>
-							</table>
-						</div>
-					</section>
+					<div style="padding:10px" id="outerCustomerDiv">
+					</div>
 				</div>
+
 			</div>
 		</section>
 	</section>

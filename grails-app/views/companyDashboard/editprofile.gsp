@@ -9,10 +9,11 @@
 	<link id="theme-style" rel="stylesheet" href="../static/html/css/styles.css">
 	<r:require modules="jquery"/>
 	<r:require modules="bootstrap"/>
-	<r:layoutResources />
+	<r:require module="fileuploader" />
 
 	<!-- Custom styles for this theme -->
 	<link rel="stylesheet" href="../static/css/neu.css">
+	<r:layoutResources />
 </head>
 
 <body class=" pace-done">
@@ -87,6 +88,11 @@
 						<i class="fa  fa-fw fa-file-text"></i> Messages
 					</g:link>
 				</li>
+				<li class="nav-dropdown">
+					<g:link uri="/companyDashboard/code">
+						<i class="fa  fa-fw fa-file-text"></i> Code Portal
+					</g:link>
+				</li>
 			</ul>
 		</nav>
 	</aside>
@@ -107,7 +113,14 @@
 						<div class="panel-body profile-wrapper">
 							<div class="col-md-3">
 								<div class="profile-pic text-center">
-									<img src="../static/images/dashboard/avatar2.png" alt="" class="img-circle">
+									<div id="logoBlock">
+										<g:if test="${company?.hasLogo}">
+											<img style="width: 90%;" src="/seeb/upload/getCompanyLogo"/>
+										</g:if>
+										<g:if test="${!company?.hasLogo}">
+											No Logo
+										</g:if>
+									</div>
 								</div>
 							</div>
 							<div class="col-md-9">
@@ -133,10 +146,16 @@
 													<g:renderErrors bean="${company}" as="list" field="location"/>
 												</div>
 
-												<div class="fieldcontain ${hasErrors(bean: company, field: 'logo', 'error')} form-group">
-													<label for="logo-name">Logo</label>
-													<g:textField name='logo' value='${company?.logo}' class="form-control" id="logo-name" maxlength="255"/>
-													<g:renderErrors bean="${company}" as="list" field="logo"/>
+												<div class="fieldcontain form-group">
+													<label>Logo</label>
+													<uploader:uploader
+															id="yourUploaderId" url="${[controller: 'upload', action: 'uploadCompanyLogo']}"
+															multiple="false">
+														<uploader:onComplete>
+															$("#logoBlock").html('<img style="width: 90%;" src="/seeb/upload/getCompanyLogo"/>');
+														</uploader:onComplete>
+													</uploader:uploader>
+
 												</div>
 
 												<div class="fieldcontain ${hasErrors(bean: company, field: 'website', 'error')} form-group">
@@ -175,8 +194,6 @@
 									<g:textField name='ytInfo' value='${company?.ytInfo}' class="form-control" id="yt-name" maxlength="255"/>
 									<g:renderErrors bean="${company}" as="list" field="ytInfo"/>
 								</div>
-
-
 							</div>
 						</div>
 					</section>
@@ -190,7 +207,7 @@
 		</section>
 	</section>
 </section>
-<r:layoutResources />
+<r:layoutResources/>
 </body></html>
 
 

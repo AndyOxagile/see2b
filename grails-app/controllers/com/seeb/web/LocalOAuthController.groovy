@@ -5,6 +5,7 @@ import com.seeb.web.oauth.OautUser
 import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.plugin.springsecurity.oauth.OAuthCreateAccountCommand
+import grails.plugin.springsecurity.oauth.OAuthLoginException
 import grails.plugin.springsecurity.oauth.OAuthToken
 import grails.plugin.springsecurity.oauth.SpringSecurityOAuthController
 import org.apache.commons.lang.RandomStringUtils
@@ -26,9 +27,6 @@ class LocalOAuthController extends  SpringSecurityOAuthController {
 
         def sessionKey = oauthService.findSessionKeyForAccessToken(type)
         session[sessionKey] = t
-        if(!"local".equals(type)) {
-            session[oauthService.findSessionKeyForAccessToken("local")] = null
-        }
         def oAuthToken =
                 "external".equals(type)? externalSpringSecurityOAuthService.createAuthToken(t):
                 "temp".equals(type)? tempSpringSecurityOAuthService.createAuthToken(t):
@@ -52,7 +50,14 @@ class LocalOAuthController extends  SpringSecurityOAuthController {
     }
 
     def setUserStatusAndSendEmail(OautUser user){
-        boolean isLocal = session[oauthService.findSessionKeyForAccessToken("local")]!=null
+        boolean isLocal =
+                session[oauthService.findSessionKeyForAccessToken("local")]!=null &&
+                session[oauthService.findSessionKeyForAccessToken("external")]==null &&
+                session[oauthService.findSessionKeyForAccessToken("temp")]==null &&
+                session[oauthService.findSessionKeyForAccessToken("facebook")]==null &&
+                session[oauthService.findSessionKeyForAccessToken("linkedin")]==null &&
+                session[oauthService.findSessionKeyForAccessToken("google")]==null
+
         tokService.createTokSessionByUser(user)
         OAuthStatusInfo info = new OAuthStatusInfo(account:user, verified: !isLocal, verifyLink: RandomStringUtils.randomAlphanumeric(15))
         info.save(flush: true)
@@ -136,5 +141,34 @@ class LocalOAuthController extends  SpringSecurityOAuthController {
         if (session[oauthService.findSessionKeyForAccessToken("external")]==null) {
             redirect(redirectUrl instanceof Map ? redirectUrl : [uri: redirectUrl])
         }
+    }
+
+
+
+    def askToLinkOrCreateAccount() {
+        if (springSecurityService.isLoggedIn()) {
+            def currentUser = springSecurityService.getCurrentUser()
+            OAuthToken oAuthToken = session[SPRING_SECURITY_OAUTH_TOKEN]
+            if (!oAuthToken) {
+                log.warn "askToLinkOrCreateAccount: OAuthToken not found in session"
+                throw new OAuthLoginException('Authentication error')
+            }
+            currentUser.addToOAuthIDs(provider: oAuthToken.providerName, accessToken: oAuthToken.socialId, user: currentUser)
+            if (currentUser.validate() && currentUser.save()) {
+                oAuthToken = springSecurityOAuthService.updateOAuthToken(oAuthToken, currentUser)
+                authenticateAndRedirect(oAuthToken, getDefaultTargetUrl())
+                return
+            }
+        }
+
+        String pass = RandomStringUtils.randomAlphabetic(5) + "@" + RandomStringUtils.randomNumeric(3) + RandomStringUtils.randomAlphabetic(5)
+        OAuthCreateAccountCommand command = new OAuthCreateAccountCommand(
+                username: RandomStringUtils.randomAlphabetic(10)+"@"+RandomStringUtils.randomAlphabetic(10)+"random.com",
+                password1: pass,
+                password2: pass,
+                springSecurityOAuthService: springSecurityOAuthService)
+        createAccount(command)
+
+//        return new ModelAndView("/springSecurityOAuth/askToLinkOrCreateAccount", [rememberMeParameter:getRememberMeParameterName()])
     }
 }

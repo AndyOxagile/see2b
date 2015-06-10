@@ -233,6 +233,7 @@ grails.plugin.springsecurity.interceptUrlMap = [
         '/logout/**':                   ['permitAll'],
         '/oauth/**':                    ['permitAll'],
         '/dashboard/**':                ['permitAll'],
+        '/upload/**':                   ['permitAll'],
         '/companyDashboard/**':         ['permitAll'],
         '/localOAuth/createAndLoginExternalAccount': ['permitAll'],
         '/tokbox/**':                   ['permitAll'],

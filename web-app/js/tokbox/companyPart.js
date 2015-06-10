@@ -1,6 +1,8 @@
 var userStates = {};
 
-var initUserStateTimer =  function(){
+var initUserStateTimer =  function(customerDivId){
+	console.log(customerDivId);
+	userStates.customerDivId = customerDivId;
 	//TODO need release interval after some signal
 	setInterval( function(){
 		jQuery.ajax({
@@ -22,12 +24,13 @@ var makeShortMap = function(){
 
 	$.each(userStates.data.map, function(key,val){
 		userStates.mapLength++;
-		userStates.shortMap[val.id] = {state: val.state, isAvailible: val.isAvailible, name: val.name};
+		userStates.shortMap[val.id] = {haveLogo:val.haveLogo, state: val.state, isAvailible: val.isAvailible, name: val.name};
 
 		if(userStates.prevShortMap == undefined
 				|| userStates.prevShortMap[val.id] == undefined
 				|| userStates.prevShortMap[val.id].state != val.state
 				|| userStates.prevShortMap[val.id].isAvailible != val.isAvailible
+				|| userStates.prevShortMap[val.id].haveLogo != val.haveLogo
 				|| userStates.prevShortMap[val.id].name != val.name) {
 			userStates.needUpdate = true;
 		}
@@ -54,43 +57,96 @@ var makeShortMap = function(){
 	}
 };
 
+var buildForInnerDiv = function(){
+	var redPoint = "<div style=\"border:4px solid red; width:0; height:0;border-radius: 4px;display:inline-block\"></div>";
+	var greenPoint = "<div style=\"border:4px solid green; width:0; height:0;border-radius: 4px;display:inline-block\"></div>";
+//		var out = "<table>";
+	var out = "";
+	var showConference = false;
+	$.each(userStates.data.map, function (key, val) {
+		showConference = true;
+		out += "<div class=\"" + (val.isAvailible ? "" : "offline") + "\">" + (val.isAvailible ? greenPoint : redPoint);
+
+		if (val.state == "CLIENT_CALL") {
+			out += " User <b>" + val.name + "</b> calls your. Please <a style=\"color:green\" href=\"javascript:acceptCall('" + val.id + "', true);\">Accept</a> or <a style=\"color:red\" href=\"javascript:declineCall('" + val.id + "');\">Decline</a></br>";
+		} else if (val.state == "INACTIVE") {
+			if (val.isAvailible) {
+				out += " <b>" + val.name + "</b>. <a style=\"color:green\" href=\"javascript:initCall('" + val.id + "');\">Call</a><br/>";
+			} else {
+				out += " <b>" + val.name + "</b>.<br/>";
+			}
+		} else if (val.state == "COMPANY_CALL") {
+			out += " <b>" + val.name + "</b>. Calling... <a style=\"color:red\" href=\"javascript:cancelCall('" + val.id + "');\">Cancel</a><br/>";
+		} else if (val.state == "IN_CALL") {
+			out += " <b>" + val.name + "</b> is calling with you.<br/>";
+		}
+
+		out += "</div>";
+	});
+
+	if (showConference) {
+		document.getElementById("conference-div").style.display = "block";
+	} else {
+		document.getElementById("conference-div").style.display = "none";
+	}
+
+	document.getElementById("customer_list").innerHTML = out;
+};
+
+var buildForCustomDiv = function(){
+	var offlineBlock = "<div style=\"width: 100%;height: 35px;background-color: #697285;color: white;border-radius: 6px;font-size: 23px;\">Offline</div>";
+	var onlineBlock = "<div style=\"width: 100%;height: 35px;background-color: #004eff;color: white;border-radius: 6px;font-size: 23px;\">Online</div>";
+
+	var out = "";
+	$.each(userStates.data.map, function (key, val) {
+		out+="<section class=\"panel\" style=\"min-width: 550px;width:550px;\"><div class=\"row\">";
+
+		out+="<div class=\"col-xs-3\">";
+		out+=val.haveLogo?"<img style=\"height:75px;width:75px\" src=\"/seeb/upload/getAccountLogo/" + val.id + "\"/>":"<div style=\"margin:23px 0 0 9px\">No logo</div>";
+		out+="</div>";
+
+		out+="<div class=\"col-xs-5\" style=\"text-align: center\">";
+		out+="<span style=\"font-size: 26px;\">" + val.name + "</span>";
+
+		out +=val.isAvailible ? onlineBlock : offlineBlock;
+		out+="</div>";
+
+		out+="<div class=\"col-xs-4\">";
+
+		if (val.state == "CLIENT_CALL") {
+			out += "<button onClick=\"acceptCall('" + val.id + "')\" ><span class=\"glyphicon glyphicon-earphone green\"></span><br/>Accept</button>";
+			out += "<button onClick=\"declineCall('" + val.id + "')\" ><span class=\"glyphicon glyphicon-earphone red deg180\"></span><br/>Decline</button>";
+		} else if (val.state == "INACTIVE") {
+			if (val.isAvailible) {
+				out += "<button onClick=\"initCall('" + val.id + "')\" ><span class=\"glyphicon glyphicon-earphone green\"></span><br/>Call</button>";
+			}
+		} else if (val.state == "COMPANY_CALL") {
+			out += "Calling...";
+			out += "<button onClick=\"cancelCall('" + val.id + "')\" ><span class=\"glyphicon glyphicon-earphone red deg180\"></span><br/>Cancel</button>";
+		} else if (val.state == "IN_CALL") {
+			out += " <b>" + val.name + "</b> is calling with you.<br/>";
+		}
+		out+="</div>";
+		out+="</div></section>";
+	});
+
+	document.getElementById("conference-div").style.display = "block";
+	document.getElementById(userStates.customerDivId).innerHTML = out;
+};
+
+
 var showUserState = function(data){
 	userStates.data = data;
 	makeShortMap();
 	if (userStates.needUpdate) {
-		var redPoint = "<div style=\"border:4px solid red; width:0; height:0;border-radius: 4px;display:inline-block\"></div>";
-		var greenPoint = "<div style=\"border:4px solid green; width:0; height:0;border-radius: 4px;display:inline-block\"></div>";
-//		var out = "<table>";
-		var out = "";
-		var showConference = false;
-		$.each(data.map, function(key,val){
-			showConference = true;
-			out += "<div class=\"" + (val.isAvailible?"":"offline") + "\">" + (val.isAvailible?greenPoint:redPoint);
 
-			if (val.state == "CLIENT_CALL"){
-				out += " User <b>" + val.name + "</b> calls your. Please <a style=\"color:green\" href=\"javascript:acceptCall('" + val.id + "', true);\">Accept</a> or <a style=\"color:red\" href=\"javascript:declineCall('" + val.id + "');\">Decline</a></br>";
-			} else if (val.state == "INACTIVE"){
-				if(val.isAvailible) {
-					out += " <b>" + val.name + "</b>. <a style=\"color:green\" href=\"javascript:initCall('" + val.id + "');\">Call</a><br/>";
-				} else {
-					out += " <b>" + val.name + "</b>.<br/>";
-				}
-			} else if (val.state == "COMPANY_CALL"){
-				out += " <b>" + val.name + "</b>. Calling... <a style=\"color:red\" href=\"javascript:cancelCall('" + val.id + "');\">Cancel</a><br/>";
-			} else if (val.state == "IN_CALL"){
-				out += " <b>" + val.name + "</b> is calling with you.<br/>";
-			}
-
-			out += "</div>";
-		});
-
-		if(showConference ){
-			document.getElementById("conference-div").style.display = "block";
-		} else {
-			document.getElementById("conference-div").style.display = "none";
+		if(userStates.customerDivId == undefined || userStates.customerDivId.length == 0) {
+			console.log(11);
+			buildForInnerDiv()
+		}else{
+			console.log(22);
+			buildForCustomDiv()
 		}
-
-		document.getElementById("customer_list").innerHTML = out;
 	}
 };
 

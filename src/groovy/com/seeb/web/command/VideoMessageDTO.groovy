@@ -12,6 +12,7 @@ import com.seeb.web.enums.VideoMessageState
 
 class VideoMessageDTO {
     String date
+    String time
     String state
     String user
     String company
@@ -23,7 +24,8 @@ class VideoMessageDTO {
     static VideoMessageDTO make(VideoMessage message, OpenTok opentok){
         VideoMessageDTO result = new VideoMessageDTO()
         if(message != null){
-            result.date = message.date.format('MM/dd/yyyy HH:dd')
+            result.date = message.date.format('MM/dd/yyyy')
+            result.time = message.date.format('hh:mm aa')
             result.state = message.state.toString()
 
             AccountInfo ai = AccountInfo.findByAccount(message.account)

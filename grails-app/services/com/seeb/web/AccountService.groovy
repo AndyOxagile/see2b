@@ -11,13 +11,17 @@ class AccountService {
 
     AccountInfoDTO currentAccountInfo() {
         OautUser currentUser = (OautUser)springSecurityService.getCurrentUser()
+
         AccountInfo currentInfo = AccountInfo.findByAccount(currentUser)
         OAuthStatusInfo info = OAuthStatusInfo.findByAccount(currentUser)
+        AccountLogo al = AccountLogo.findByAccount(currentUser)
+
         AccountInfoDTO ai
         if(currentInfo != null){
-            ai = AccountInfoDTO.fromAccountInfo(currentInfo)
+
+            ai = AccountInfoDTO.fromAccountInfo(currentInfo, al)
         } else {
-            ai = AccountInfoDTO.generateNew()
+            ai = AccountInfoDTO.generateNew(al)
         }
 
         if(!info.verified) {

@@ -86,6 +86,11 @@
 						<i class="fa  fa-fw fa-file-text"></i> Messages
 					</g:link>
 				</li>
+				<li class="nav-dropdown">
+					<g:link uri="/companyDashboard/code">
+						<i class="fa  fa-fw fa-file-text"></i> Code Portal
+					</g:link>
+				</li>
 			</ul>
 		</nav>
 	</aside>

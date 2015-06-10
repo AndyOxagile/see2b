@@ -3462,7 +3462,6 @@ select {
 
 }
 
-
 #seebActionBox #leaveButton span{
 	color: red;
 }
@@ -3473,4 +3472,29 @@ select {
 
 #seebActionBox button:disabled span{
 	color: #aaa;
+}
+
+#outerCustomerDiv button {
+	background-color: transparent;
+	margin-top: 20px;
+	border: none;
+}
+
+#outerCustomerDiv button span {
+	color: red;
+	font-size: 25px;
+}
+#outerCustomerDiv span.green {
+	color:green;
+}
+#outerCustomerDiv span.red {
+	color:red;
+}
+
+#outerCustomerDiv span.gray {
+	color:#aaa;
+}
+
+#outerCustomerDiv span.deg180 {
+	transform:rotateY(180deg)
 }

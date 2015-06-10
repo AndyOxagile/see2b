@@ -77,6 +77,6 @@ grails.project.dependency.resolution = {
 
         compile ":mail:1.0.7"
 
-        compile ":jsonp:0.2"
+        compile ":ajax-uploader:1.1"
     }
 }

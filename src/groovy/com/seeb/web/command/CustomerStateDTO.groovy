@@ -1,5 +1,6 @@
 package com.seeb.web.command
 import com.seeb.web.AccountInfo
+import com.seeb.web.AccountLogo
 import com.seeb.web.TokSession
 import com.seeb.web.oauth.OAuthStatusInfo
 
@@ -14,6 +15,7 @@ class CustomerStateDTO {
     String state
     Boolean isAvailible = false
     String name
+    Boolean haveLogo
 
 
     static CustomerStateDTO make(TokSession tokSession, Long timeout){
@@ -27,9 +29,13 @@ class CustomerStateDTO {
             if(tokSession.account!=null) {
                 result.id = tokSession.account.id
                 AccountInfo ai = AccountInfo.findByAccount(tokSession.account)
-                OAuthStatusInfo info = OAuthStatusInfo.findByAccount(tokSession.account)
                 result.name = ((ai && ai.firstName)?ai.firstName:"-") + " " + ((ai && ai.lastName)?ai.lastName:"-")
+
+                OAuthStatusInfo info = OAuthStatusInfo.findByAccount(tokSession.account)
                 result.isAvailible = info?.isAvailible != null && (new Date().getTime() - info.isAvailible.getTime() < timeout)
+
+                AccountLogo logo = AccountLogo.findByAccount(tokSession.account)
+                result.haveLogo = logo != null
             }
         }
         result

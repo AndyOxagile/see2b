@@ -11,7 +11,7 @@
 	<r:layoutResources />
 
 	<!-- Custom styles for this theme -->
-	<link rel="stylesheet" href="../static/css/neu.css">
+	<link id="theme-style" rel="stylesheet" href="../static/html/css/styles.css">
 </head>
 
 <body class=" pace-done">
@@ -114,7 +114,14 @@
 						<div class="panel-body profile-wrapper">
 							<div class="col-md-3">
 								<div class="profile-pic text-center">
-									<img src="../static/images/dashboard/avatar2.png" alt="" class="img-circle">
+									<div id="logoBlock">
+										<g:if test="${accountInfo?.hasLogo}">
+											<img style="width: 90%;" src="/seeb/upload/getAccountLogo"/>
+										</g:if>
+										<g:if test="${!accountInfo?.hasLogo}">
+											No Logo
+										</g:if>
+									</div>
 								</div>
 							</div>
 							<div class="col-md-9">

@@ -9,6 +9,7 @@
 	<link id="theme-style" rel="stylesheet" href="../static/html/css/styles.css">
 	<r:require modules="jquery"/>
 	<r:require modules="bootstrap"/>
+	<r:require module="fileuploader" />
 	<r:layoutResources />
 
 	<!-- Custom styles for this theme -->
@@ -111,8 +112,13 @@
 					<section class="panel">
 						<div class="panel-body profile-wrapper">
 							<div class="col-md-3">
-								<div class="profile-pic text-center">
-									<img src="../static/images/dashboard/avatar2.png" alt="" class="img-circle">
+								<div id="logoBlock">
+									<g:if test="${accountInfo?.hasLogo}">
+										<img style="width: 90%;" src="/seeb/upload/getAccountLogo"/>
+									</g:if>
+									<g:if test="${!accountInfo?.hasLogo}">
+										No Logo
+									</g:if>
 								</div>
 							</div>
 							<div class="col-md-9">
@@ -122,6 +128,17 @@
 
 										<fieldset>
 											<div class="form-group">
+												<div class="fieldcontain form-group">
+													<label>Avatar</label>
+													<uploader:uploader
+															id="yourUploaderId" url="${[controller: 'upload', action: 'uploadAccountLogo']}"
+															multiple="false">
+														<uploader:onComplete>
+															$("#logoBlock").html('<img style="width: 90%;" src="/seeb/upload/getAccountLogo"/>');
+														</uploader:onComplete>
+													</uploader:uploader>
+												</div>
+
 												<div class="fieldcontain ${hasErrors(bean: accountInfo, field: 'companyName', 'error')} form-group">
 													<label for="company-name">Company</label>
 													<g:textField name='companyName' value='${accountInfo?.companyName}' class="form-control" id="company-name" maxlength="255"/>

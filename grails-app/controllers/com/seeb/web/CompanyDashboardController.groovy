@@ -12,7 +12,8 @@ class CompanyDashboardController {
     def companyService
     def tokService
     def videoMessageService
-    def archiveService
+    def ajaxUploaderService
+
 
 
     def index() {
@@ -50,6 +51,11 @@ class CompanyDashboardController {
         Company company = companyService.getFirstCompany()
         List<CustomerDTO> customers = tokService.getCustomerList()
         render (view: "customers", model: [company: company, customers: customers ])
+    }
+
+    def code(){
+        Company company = companyService.getFirstCompany()
+        render (view: "code", model: [company: company])
     }
 
     def getCustomersStateList(){
@@ -110,6 +116,7 @@ class CompanyDashboardController {
             tokService.changeStatusByAccount(it.account, it.active, SessionState.INACTIVE)
         }
         print "stop active2";
+        render "ok"
     }
 
 }
