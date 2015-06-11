@@ -97,7 +97,7 @@ class TokService {
 
     //TODO need end all incall action for offline users, need hook
     Map<Long, CustomerStateDTO> getCustomersStateList() {
-        List<OautUser> accounts = OautUser.getAll();
+        List<OautUser> accounts = OautUser.findAllByAccountLocked(false);
         Map<Long, CustomerStateDTO> result = new HashMap<Long, CustomerStateDTO>()
         def company = companyService.getFirstCompany()
         company.isAvailible = new Date()

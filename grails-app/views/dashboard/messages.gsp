@@ -12,7 +12,7 @@
 	<r:layoutResources />
 	<!-- Custom styles for this theme -->
 	<link rel="stylesheet" href="../static/css/neu.css">
-	<script src="../static/js/tokbox/clientPart.js"></script>
+	<script src="../static/js/tokbox/generalPart.js"></script>
 </head>
 
 <body class=" pace-done">
@@ -30,7 +30,9 @@
 				<a class="dropdown-toggle" data-toggle="dropdown">
 					<span class="meta">
 						<span class="avatar">
-							<img src="../static/images/dashboard/profile.jpg" class="img-circle" alt="">
+							<g:if test="${accountInfo?.hasLogo}">
+								<img class="img-circle" src="/seeb/upload/getAccountLogo"/>
+							</g:if>
 						</span>
 						<span class="text">${accountInfo?.firstName} ${accountInfo?.lastName}</span>
 						<span class="caret"></span>
@@ -49,7 +51,9 @@
 		<div class="sidebar-profile">
 
 			<div class="avatar">
-				<img class="img-circle profile-image" src="../static/images/dashboard/profile.jpg" alt="profile">
+				<g:if test="${accountInfo?.hasLogo}">
+					<img class="img-circle profile-image" src="/seeb/upload/getAccountLogo"/>
+				</g:if>
 			</div>
 
 			<div class="profile-body dropdown">
@@ -137,7 +141,7 @@
 									</th>
 								</tr>
 								<g:each in="${videoMessages}" var="message">
-									<tr>
+									<tr id="message_${message.id}">
 										<td>${message.date}</td>
 										<td>${message.time}</td>
 										<td>${message.user}</td>
@@ -149,7 +153,7 @@
 													<span class="glyphicon glyphicon-play" ></span>
 												</button>
 											</g:if>
-											<button style="background-color: transparent;color: black; border-radius: 4px;border: none;outline:0">
+											<button onClick="removeVideo('${message.id}')" style="background-color: transparent;color: black; border-radius: 4px;border: none;outline:0">
 												<span class="glyphicon glyphicon-trash" ></span>
 											</button>
 										</td>

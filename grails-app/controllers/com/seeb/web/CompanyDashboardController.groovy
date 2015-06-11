@@ -1,6 +1,5 @@
 package com.seeb.web
 import com.seeb.web.command.CompanyProfileDTO
-import com.seeb.web.command.CustomerDTO
 import com.seeb.web.command.VideoMessageDTO
 import com.seeb.web.enums.SessionState
 import com.seeb.web.oauth.OautUser
@@ -49,8 +48,8 @@ class CompanyDashboardController {
 
     def customers(){
         Company company = companyService.getFirstCompany()
-        List<CustomerDTO> customers = tokService.getCustomerList()
-        render (view: "customers", model: [company: company, customers: customers ])
+//        List<CustomerDTO> customers = tokService.getCustomerList()
+        render (view: "customers", model: [company: company])
     }
 
     def code(){

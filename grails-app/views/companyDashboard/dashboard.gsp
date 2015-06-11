@@ -144,21 +144,6 @@
 						<img src="../static/images/company/block2.png" alt="" style="width:100%"/>
 					</section>
 				</div>
-				<div class="col-md-4">
-					<section class="panel">
-						<img src="../static/images/company/block31.png" alt="" style="width:100%"/>
-					</section>
-				</div>
-				<div class="col-md-4">
-					<section class="panel">
-						<img src="../static/images/company/block32.png" alt="" style="width:100%"/>
-					</section>
-				</div>
-				<div class="col-md-4">
-					<section class="panel">
-						<img src="../static/images/company/block33.png" alt="" style="width:100%"/>
-					</section>
-				</div>
 			</div>
 		</section>
 	</section>

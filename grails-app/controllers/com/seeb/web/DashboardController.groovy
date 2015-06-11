@@ -15,7 +15,6 @@ class DashboardController {
     def tokService
     def accountService
     def videoMessageService
-    def archiveService
     def oauthService
 
     def external() {
@@ -88,6 +87,11 @@ class DashboardController {
                 status = "Updated"
                 accountService.updateInfo(accountInfo)
             }
+
+            OautUser currentUser = (OautUser)springSecurityService.getCurrentUser()
+            AccountLogo al = AccountLogo.findByAccount(currentUser)
+            accountInfo.hasLogo = al != null
+
             render (view: "editprofile", model: [accountInfo: accountInfo, status: status, tokData: tokService.makeTokDataForUser()])
         } else {
             redirect(uri: "/index")

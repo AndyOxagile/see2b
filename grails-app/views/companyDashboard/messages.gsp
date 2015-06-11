@@ -12,7 +12,7 @@
 
 	<!-- Custom styles for this theme -->
 	<link rel="stylesheet" href="../static/css/neu.css">
-	<script src="../static/js/tokbox/companyPart.js"></script>
+	<script src="../static/js/tokbox/generalPart.js"></script>
 </head>
 
 <body class=" pace-done">
@@ -138,7 +138,7 @@
 									</th>
 								</tr>
 								<g:each in="${videoMessages}" var="message">
-									<tr>
+									<tr id="message_${message.id}">
 										<td>${message.date}</td>
 										<td>${message.time}</td>
 										<td>${message.user}</td>
@@ -150,7 +150,7 @@
 											    	<span class="glyphicon glyphicon-play" ></span>
 												</button>
 											</g:if>
-											<button style="background-color: transparent;color: black; border-radius: 4px;border: none;outline:0">
+											<button onClick="removeVideo('${message.id}')" style="background-color: transparent;color: black; border-radius: 4px;border: none;outline:0">
 												<span class="glyphicon glyphicon-trash" ></span>
 											</button>
 										</td>

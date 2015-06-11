@@ -88,7 +88,7 @@
 										callFunctional.startSession()
 									} else {
 										if (callFunctional.tokObject.timeout != null) {
-											clearTimeout(callFunctional.tokObject.timeout);
+											callFunctional.clearTimers();
 										}
 									}
 								} else if (callFunctional.tokObject.isCallActive && data.stop != undefined && data.stop) {
@@ -135,6 +135,36 @@
 				event.preventDefault();
 				callFunctional.stopRecord();
 			});
+
+			seeb.jQuery("#seebActionBox #stopRecordButton").on("click", function (event) {
+				event.preventDefault();
+				callFunctional.stopRecord();
+			});
+
+			seeb.jQuery("#seebActionBox #openButton").on("click", function (event) {
+				event.preventDefault();
+				callFunctional.openButton();
+			});
+
+
+		},
+
+		openButton: function() {
+			console.log("openButton");
+			seeb.jQuery("#seebActionBox").css({
+//				width:"268px",
+//				height:"458px"
+				width:"160px",
+				height:"100px"
+			});
+			seeb.jQuery("#seebActionBox #openButton").hide();
+			seeb.jQuery("#contentContainer").show();
+		},
+
+		clearTimers: function(){
+			seeb.jQuery("#timerArea").html("");
+			clearTimeout(callFunctional.tokObject.timeout);
+			clearTimeout(callFunctional.tokObject.timer);
 		},
 
 		startSession: function(){
@@ -177,11 +207,26 @@
 			});
 
 			callFunctional.tokObject.session.connect(callFunctional.tokObject.apiKey, callFunctional.tokObject.token);
+			seeb.jQuery("#seebActionBox").css({
+				width:"268px",
+				height:"458px"
+			});
+
 
 			if(!callFunctional.tokObject.autoInit) {
 				if (callFunctional.tokObject.timeout != null) {
-					clearTimeout(callFunctional.tokObject.timeout);
+					callFunctional.clearTimers();
 				}
+
+				var timerFunc = function() {
+					callFunctional.tokObject.timer = setTimeout(timerFunc, 100);
+					callFunctional.tokObject.delta-=100;
+					seeb.jQuery("#timerArea").html(callFunctional.tokObject.delta/1000)
+
+				};
+				callFunctional.tokObject.delta = 30000;
+				timerFunc();
+
 				callFunctional.tokObject.timeout = setTimeout(function () {
 					callFunctional.stopSession(true)
 				}, 30000);
@@ -201,9 +246,15 @@
 		},
 
 		stopSession: function(sendSignal){
+			callFunctional.clearTimers();
 			callFunctional.tokObject.isCallActive = false;
 			callFunctional.tokObject.session.disconnect();
 			document.getElementById("video_content").innerHTML = "";
+			seeb.jQuery("#seebActionBox").css({
+				width:"160px",
+				height:"100px"
+			});
+
 			if(sendSignal){
 				callFunctional.withoutCallbackTemplate("callTimeoutOver");
 			}
@@ -231,6 +282,11 @@
 				}
 			});
 			callFunctional.tokObject.session.connect(callFunctional.tokObject.apiKey, callFunctional.tokObject.token);
+			seeb.jQuery("#seebActionBox").css({
+				width:"268px",
+				height:"258px"
+			});
+
 			seeb.jQuery("#seebActionBox #leaveButton").hide();
 			seeb.jQuery("#seebActionBox #stopRecordButton").show();
 			callFunctional.withoutCallbackTemplate("recordMessage");
@@ -239,6 +295,10 @@
 		stopRecord: function(){
 			callFunctional.tokObject.session.disconnect();
 			document.getElementById("video_content").innerHTML = "";
+			seeb.jQuery("#seebActionBox").css({
+				width:"160px",
+				height:"100px"
+			});
 			seeb.jQuery("#seebActionBox #startButton").show();
 			seeb.jQuery("#seebActionBox #stopRecordButton").hide();
 			seeb.jQuery("#seebActionBox #leaveButton").hide();

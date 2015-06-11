@@ -101,7 +101,7 @@ var buildForCustomDiv = function(){
 	$.each(userStates.data.map, function (key, val) {
 		out+="<section class=\"panel\" style=\"min-width: 550px;width:550px;\"><div class=\"row\">";
 
-		out+="<div class=\"col-xs-3\">";
+		out+="<div class=\"col-xs-2\">";
 		out+=val.haveLogo?"<img style=\"height:75px;width:75px\" src=\"/seeb/upload/getAccountLogo/" + val.id + "\"/>":"<div style=\"margin:23px 0 0 9px\">No logo</div>";
 		out+="</div>";
 
@@ -111,14 +111,14 @@ var buildForCustomDiv = function(){
 		out +=val.isAvailible ? onlineBlock : offlineBlock;
 		out+="</div>";
 
-		out+="<div class=\"col-xs-4\">";
+		out+="<div class=\"col-xs-5\">";
 
 		if (val.state == "CLIENT_CALL") {
 			out += "<button onClick=\"acceptCall('" + val.id + "')\" ><span class=\"glyphicon glyphicon-earphone green\"></span><br/>Accept</button>";
 			out += "<button onClick=\"declineCall('" + val.id + "')\" ><span class=\"glyphicon glyphicon-earphone red deg180\"></span><br/>Decline</button>";
 		} else if (val.state == "INACTIVE") {
 			if (val.isAvailible) {
-				out += "<button onClick=\"initCall('" + val.id + "')\" ><span class=\"glyphicon glyphicon-earphone green\"></span><br/>Call</button>";
+				out += "<button onClick=\"initCall('" + val.id + "')\" ><span class=\"glyphicon glyphicon-facetime-video green\"></span><br/>Call</button>";
 			}
 		} else if (val.state == "COMPANY_CALL") {
 			out += "Calling...";
@@ -126,6 +126,9 @@ var buildForCustomDiv = function(){
 		} else if (val.state == "IN_CALL") {
 			out += " <b>" + val.name + "</b> is calling with you.<br/>";
 		}
+
+		out += "<button onClick=\"removeUser('" + val.id + "')\" ><span class=\"glyphicon glyphicon-trash\"></span><br/>Remove</button>";
+
 		out+="</div>";
 		out+="</div></section>";
 	});
@@ -174,6 +177,17 @@ var initCall = function(id) {
 			error:function(XMLHttpRequest,textStatus,errorThrown){}}
 	);
 };
+
+var removeUser = function(id) {
+	jQuery.ajax({
+			type:'POST',
+			url:'/seeb/remove/removeUser/' + id,
+			success:function(data,textStatus){
+			},
+			error:function(XMLHttpRequest,textStatus,errorThrown){}}
+	);
+};
+
 
 var cancelCall = function(id) {
 	jQuery.ajax({
@@ -250,15 +264,6 @@ var stopCall = function() {
 	userStates.session.disconnect();
 	userStates.session = undefined;
 	userStates.activeId = undefined;
-};
-
-var playVideo = function (url) {
-	document.getElementById("videoContainer").innerHTML =
-		"<video id=\"videoBox\" height=\"300\" src=\"" + url + "\" controls></video>";
-	document.getElementById("videoBox").load();
-	document.getElementById("videoBox").oncanplay = function() {
-		document.getElementById("videoBox").play()
-	};
 };
 
 window.addEventListener('beforeunload', function (event){

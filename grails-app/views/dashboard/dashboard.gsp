@@ -29,7 +29,9 @@
 				<a class="dropdown-toggle" data-toggle="dropdown">
 					<span class="meta">
 						<span class="avatar">
-							<img src="../static/images/dashboard/profile.jpg" class="img-circle" alt="">
+							<g:if test="${accountInfo?.hasLogo}">
+								<img class="img-circle" src="/seeb/upload/getAccountLogo"/>
+							</g:if>
 						</span>
 						<span class="text">${accountInfo.firstName} ${accountInfo.lastName}</span>
 						<span class="caret"></span>
@@ -48,7 +50,9 @@
 		<div class="sidebar-profile">
 
 			<div class="avatar">
-				<img class="img-circle profile-image" src="../static/images/dashboard/profile.jpg" alt="profile">
+				<g:if test="${accountInfo?.hasLogo}">
+					<img class="img-circle profile-image" src="/seeb/upload/getAccountLogo"/>
+				</g:if>
 			</div>
 
 			<div class="profile-body dropdown">

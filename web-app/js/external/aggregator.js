@@ -101,21 +101,24 @@
 
 		generateTemplate: function(){
 			seeb.jQuery('<style>' +
-				'#seebActionBox{padding:2px;border:1px solid black;width:268px;height:458px; position: fixed;right: 0;top: 20%;background-color:white;z-index:1000000}' +
+				'#seebActionBox{width: 32px;height: 156px;padding:2px;border:1px solid black; position: fixed;right: 0;top: 20%;background-color:white;z-index:1000000}' +
 				'</style>').appendTo(seeb.jQuery('head'));
 
 			seeb.jQuery("<div id='seebActionBox'>" +
+				"<input type=\"button\" value=\"Open\" id=\"openButton\" style=\"transform: rotate(-90deg);margin-top: 59px;margin-left: -66px;height: 39px;width: 163px;\"/>" +
+				"<div id =\"contentContainer\" style=\"display: none;\">" +
 				"<div id=\"loading_user\">Loading...</div>" +
 				"Company No 1 <span id=\"callYour\" style=\"display: none\"> is calling you...</span>" +
 				"<div style=\"width:12px;height:10px;display:inline-block;\"><div style=\"border:5px solid red; width:0; height:0;border-radius: 5px;display:none;\" id=\"redPoint\"></div>" +
 				"<div style=\"border:5px solid green; width:0; height:0;border-radius: 5px;display:none;\" id=\"greenPoint\"></div></div>" +
+				"<span id=\"timerArea\"></span><br/>" +
 				"<input type=\"button\" value=\"Call\" id=\"startButton\" style=\"display: none;margin-right:5px;\"/>" +
 				"<input type=\"button\" value=\"Decline call\" id=\"declineButton\" style=\"display: none;margin-right:5px;\"/>" +
 				"<input type=\"button\" value=\"stop\" id=\"stopCall\" style=\"display: none;margin-right:5px;\"/>" +
 				"<input type=\"button\" value=\"leave message\" id=\"leaveButton\" style=\"display:none;margin-right:5px;\"/>" +
 				"<input type=\"button\" value=\"stop record\" id=\"stopRecordButton\" style=\"display:none;margin-right:5px;\"/>" +
 				"<div id=\"video_content\"></div>" +
-				"</div>").appendTo(seeb.jQuery('body'));
+				"</div></div>").appendTo(seeb.jQuery('body'));
 
 
 

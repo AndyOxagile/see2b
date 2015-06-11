@@ -2,7 +2,7 @@
 	var seeb = {
 		jQuery: jQuery,
 		baseScriptUrl: "/seeb/"
-	}
+	};
 
 	var callFunctional = {
 
@@ -68,7 +68,7 @@
 										callFunctional.startSession()
 									} else {
 										if (callFunctional.tokObject.timeout != null) {
-											clearTimeout(callFunctional.tokObject.timeout);
+											callFunctional.clearTimers();
 										}
 									}
 								} else if (callFunctional.tokObject.isCallActive && data.stop != undefined && data.stop) {
@@ -117,6 +117,12 @@
 			});
 		},
 
+		clearTimers: function(){
+			seeb.jQuery("#timerArea").html("");
+			clearTimeout(callFunctional.tokObject.timeout);
+			clearTimeout(callFunctional.tokObject.timer);
+		},
+
 		startSession: function(){
 			callFunctional.tokObject.isCallActive = true;
 
@@ -158,8 +164,18 @@
 
 			if(!callFunctional.tokObject.autoInit) {
 				if (callFunctional.tokObject.timeout != null) {
-					clearTimeout(callFunctional.tokObject.timeout);
+					callFunctional.clearTimers();
 				}
+
+				var timerFunc = function() {
+					callFunctional.tokObject.timer = setTimeout(timerFunc, 100);
+					callFunctional.tokObject.delta-=100;
+					seeb.jQuery("#timerArea").html(callFunctional.tokObject.delta/1000)
+
+				};
+				callFunctional.tokObject.delta = 30000;
+				timerFunc();
+
 				callFunctional.tokObject.timeout = setTimeout(function () {
 					callFunctional.stopSession(true)
 				}, 30000);
@@ -179,6 +195,7 @@
 		},
 
 		stopSession: function(sendSignal){
+			callFunctional.clearTimers();
 			callFunctional.tokObject.isCallActive = false;
 			callFunctional.tokObject.session.disconnect();
 			document.getElementById("video_content").innerHTML = "";
